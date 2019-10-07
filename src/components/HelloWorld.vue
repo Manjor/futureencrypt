@@ -23,8 +23,8 @@
           <br>Por Favor, escolha uma das opções e teste o sistema.
         </p>
         <v-radio-group v-model="switch1" row>
-          <v-radio label="Cirptografar" :value="true"></v-radio>
-          <v-radio label="Decriptografar" :value="false"></v-radio>
+          <v-radio label="Criptografar" :value="true"></v-radio>
+          <v-radio label="Descriptografar" :value="false"></v-radio>
         </v-radio-group>
         <v-text-field :label="switch1 ? 'Senha' : 'Chave'" v-model="senha" filled/>
         <v-btn class="mx-2" color="primary" @click="submit()">Converter</v-btn>
