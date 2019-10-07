@@ -8,7 +8,7 @@
       <v-spacer></v-spacer>
       <v-btn
         text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://futureagencia.herokuapp.com/"
         target="_blank"
       >
         <span class="mr-2">Future Agência</span>
