@@ -1,58 +1,99 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-container>
+    <v-layout
+      text-center
+      wrap
+    >
+      <v-flex xs12>
+        <v-img
+          :src="require('../assets/logo.png')"
+          class="my-3 mx-auto"
+          contain
+          height="200"
+          width="150"
+        ></v-img>
+      </v-flex>
+
+      <v-flex mb-4>
+        <h1 class="display-2 font-weight-bold mb-3">
+          Bem Vindo ao Future Encrypt
+        </h1>
+        <p class="subheading font-weight-regular">
+          Sistema Desenvolvido para criptografia de senhas onde mostra o resultado em Hexadecial, porem antes é feito a conversão em Binário
+          <br>Por Favor, escolha uma das opções e teste o sistema.
+        </p>
+        <v-radio-group v-model="switch1" row>
+          <v-radio label="Cirptografar" :value="true"></v-radio>
+          <v-radio label="Decriptografar" :value="false"></v-radio>
+        </v-radio-group>
+        <v-text-field :label="switch1 ? 'Senha' : 'Chave'" v-model="senha" filled/>
+        <v-btn class="mx-2" color="primary" @click="submit()">Converter</v-btn>
+        <v-btn class="mx-2" color="warning" outlined @click="limpar()">Limpar</v-btn>
+        <v-alert
+          v-show="resultado!== ''"
+          icon="mdi-shield-lock-outline"
+          prominent
+          text
+          type="info"
+          class="my-5"
+        >
+        Sua Chave é: <br>
+          {{ resultado }}
+        </v-alert>
+      </v-flex>
+
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  data: () => ({
+    senha: '',
+    resultado: '',
+    key: '$asdaserq@#!@#!@DSADSQDADCASasdsa4312#',
+    switch1: true
+  }),
+  methods: {
+    submit(){
+      this.switch1 ? this.crypt() : this.decrypt();
+    },
+    crypt(){
+      const array = this.senha.split("");
+      const arrayBin = [];
+      const arrayHex = [];
+      array.forEach((letra,index) => {
+        arrayBin.push(this.convertBin(letra))
+      })
+      arrayBin.forEach(binario =>{
+        arrayHex.push(this.convertHex(binario))
+      })
+      this.resultado = arrayHex.reverse().join('-')
+    },
+    decrypt(){
+      
+      const array = this.senha.split("-");
+      
+      const arrayBin = [];
+      const arrayHex = [];
+      array.reverse().forEach(hex =>{
+        arrayHex.push(this.convertHex(hex))
+      })
+      arrayHex.forEach(bin =>{
+        arrayBin.push(this.convertBin(bin))
+      })
+      this.resultado = arrayBin.join('')
+    },
+    convertBin(letra){
+      return this.switch1 ? letra.charCodeAt(0).toString(2) : String.fromCharCode(parseInt(letra,2))
+    },
+    convertHex(binario){
+      return this.switch1 ? parseInt(binario).toString(16) : parseInt(binario,16).toString()
+    },
+    limpar(){
+      this.resultado = '';
+      this.senha = '';
+    }
   }
-}
+};
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
