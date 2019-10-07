@@ -51,7 +51,6 @@ export default {
   data: () => ({
     senha: '',
     resultado: '',
-    key: '$asdaserq@#!@#!@DSADSQDADCASasdsa4312#',
     switch1: true
   }),
   methods: {
