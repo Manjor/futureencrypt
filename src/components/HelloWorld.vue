@@ -37,8 +37,12 @@
           type="info"
           class="my-5"
         >
-        Sua Chave é: <br>
-          {{ resultado }}
+        <v-row align="center">
+            <v-col class="grow">
+               Sua Chave é: <br>
+              {{ resultado }}</v-col>
+          </v-row>
+       
         </v-alert>
       </v-flex>
 
@@ -55,33 +59,27 @@ export default {
   }),
   methods: {
     submit(){
-      this.switch1 ? this.crypt() : this.decrypt();
-    },
-    crypt(){
-      const array = this.senha.split("");
       const arrayBin = [];
       const arrayHex = [];
-      array.forEach((letra,index) => {
-        arrayBin.push(this.convertBin(letra))
-      })
-      arrayBin.forEach(binario =>{
-        arrayHex.push(this.convertHex(binario))
-      })
-      this.resultado = arrayHex.reverse().join('-')
-    },
-    decrypt(){
-      
-      const array = this.senha.split("-");
-      
-      const arrayBin = [];
-      const arrayHex = [];
-      array.reverse().forEach(hex =>{
-        arrayHex.push(this.convertHex(hex))
-      })
-      arrayHex.forEach(bin =>{
-        arrayBin.push(this.convertBin(bin))
-      })
-      this.resultado = arrayBin.join('')
+      if(this.switch1){
+        const array = this.senha.split("");
+        array.forEach((letra,index) => {
+          arrayBin.push(this.convertBin(letra))
+        })
+        arrayBin.forEach(binario =>{
+          arrayHex.push(this.convertHex(binario))
+        })
+        this.resultado = arrayHex.reverse().join('-')
+      }else{
+         const array = this.senha.split("-");
+        array.reverse().forEach(hex =>{
+          arrayHex.push(this.convertHex(hex))
+        })
+        arrayHex.forEach(bin =>{
+          arrayBin.push(this.convertBin(bin))
+        })
+          this.resultado = arrayBin.join('')
+      }
     },
     convertBin(letra){
       return this.switch1 ? letra.charCodeAt(0).toString(2) : String.fromCharCode(parseInt(letra,2))
