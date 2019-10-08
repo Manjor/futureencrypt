@@ -27,7 +27,7 @@
           <v-radio label="Descriptografar" :value="false"></v-radio>
         </v-radio-group>
         <v-text-field :label="switch1 ? 'Senha' : 'Chave'" v-model="senha" filled/>
-        <v-btn class="mx-2" color="primary" @click="submit()">Converter</v-btn>
+        <v-btn class="mx-2" color="primary" @click="submit()">{{ switch1 ? 'Criptografar'  : 'Descriptografar'}}</v-btn>
         <v-btn class="mx-2" color="warning" outlined @click="limpar()">Limpar</v-btn>
         <v-alert
           v-show="resultado!== ''"
@@ -63,7 +63,7 @@ export default {
       const arrayHex = [];
       if(this.switch1){
         const array = this.senha.split("");
-        array.forEach((letra,index) => {
+        array.forEach(letra => {
           arrayBin.push(this.convertBin(letra))
         })
         arrayBin.forEach(binario =>{
